@@ -1,0 +1,69 @@
+@media only screen and (min-width: 800px) {
+    #top-header {
+        max-width: 1000px;
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+        padding-bottom: 10px;
+        border: 0;
+        
+    }
+    header a{
+        text-decoration: none;
+    }
+
+    .siteName {
+        position: relative;
+       
+        font-size: 1.85rem;
+      }
+      #tools {
+        position: relative;
+        
+      }
+    
+    body {
+        background-image: url(https://raw.githubusercontent.com/joy935/cse340starter/main/public/images/site/small_check.jpg);
+        background-size: cover;
+        background-position: center;
+    }
+    #reviews-and-upgrades{
+        display: grid;
+        grid-template-columns: 8fr 7fr;
+        
+    }
+    #div-with-upgrades{
+        /* This is to reverse the order in the Grid*/
+        order: -1;
+    }
+
+    #upgrades {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 2fr));
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        
+      }
+      .upper-box {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        text-align: center;
+        max-width: 100px;
+      }
+      .upgrade-box {
+        background-color: var(--primary-color);
+        text-align: center;
+        border: 1px solid var(--secondary-color);
+        padding: 0.5rem;
+        max-width: 100px;
+      }
+    #wrapper {
+        border: 0.2rem solid var(--primary-color);
+        border-radius: 0.5rem;
+        background-color: var(--third-color);
+        padding: 1rem;
+        max-width: 1000px;
+    }
+}

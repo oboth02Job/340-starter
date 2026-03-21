@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "username": "db_340_db_qfpw_user",
+            "database": "db_340_db_qfpw",
+            "name": "render.com",
+            "connectString": "postgresql://db_340_db_qfpw_user:ak3ABC8dRxXLjn78yKsTLmNghumF2R0r@dpg-d6rd2s7gi27c73ahbfl0-a.singapore-postgres.render.com/db_340_db_qfpw"
+        }
+    ]
+}

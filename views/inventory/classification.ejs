@@ -1,0 +1,12 @@
+<%# Builds the title %>
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<%# Block to insert message %>
+<%# messages() %>
+
+<%# Code block to enable HTML display %>
+<%- grid %>

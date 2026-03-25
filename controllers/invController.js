@@ -43,4 +43,8 @@ invCont.buildByInventoryId = async function (req, res, next) {
     }
 }
 
+invCont.triggerError = async function (req, res, next) {
+    throw new Error("Intentional Server Error")
+}
+
 module.exports = invCont;

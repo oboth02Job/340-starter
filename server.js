@@ -15,6 +15,7 @@ const inventoryRoute = require("./routes/inventoryRoute")
 const utilities = require("./utilities")
 
 
+
 /* ***********************
  * View Engine and Templates
  *************************/
@@ -25,7 +26,8 @@ app.set("layout", "./layouts/layout") // not at views root
 /* ***********************
  * Routes
  *************************/
-app.use(static)
+app.use(express.static("public"))
+
 
 //Index Route
 app.get("/", utilities.handleErrors(baseController.buildHome));

@@ -122,3 +122,50 @@ nav ul li a {
   text-align: center;
 }
 
+.vehicle-detail {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.vehicle-image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 10px;
+}
+.vehicle-info {
+  flex: 1;
+}
+
+.vehicle-info h2 {
+  margin-bottom: 10px;
+}
+
+.vehicle-info p {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.vehicle-info strong {
+  color: #0a58ca;
+  font-weight: bold;
+}
+
+.vehicle-detail-container {
+  padding: 20px;
+}
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+.vehicle-detail {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+

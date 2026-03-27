@@ -20,6 +20,7 @@ const pool = require("./database/")
 /* ***********************
  * Middleware
  * ************************/
+app.set("trust proxy", 1);
 app.use(session({
   store: new (require("connect-pg-simple")(session))({
     createTableIfMissing: true,

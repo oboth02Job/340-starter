@@ -21,23 +21,18 @@ const pool = require("./database/")
  * Middleware
  * ************************/
 app.set("trust proxy", 1);
-app.use(session({
-  store: new (require("connect-pg-simple")(session))({
-    createTableIfMissing: true,
-    pool,
+app.use(
+  session({
+    store: new (require("connect-pg-simple")(session))({
+      createTableIfMissing: true,
+      pool,
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    name: "sessionId",
   }),
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  name: "sessionId",
-}))
-
-
-app.get("/", (req, res) => {
-  req.session.message = "Session is working";
-  res.send("Session set!");
-});
-
+);
 
 /* ***********************
  * View Engine and Templates

@@ -12,15 +12,17 @@ const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
-const utilities = require("./utilities")
+const utilities = require("./utilities/")
 const session = require("express-session")
 const pool = require("./database/")
+const accountRoute = require("./routes/accountRoute")
 
+
+app.use("/account", accountRoute);
 
 /* ***********************
  * Middleware
  * ************************/
-
 app.use(
   session({
     store: new (require("connect-pg-simple")(session))({

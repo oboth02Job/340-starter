@@ -39,9 +39,9 @@
     type="password"
     id="password"
     name="account_password"
+    required 
     placeholder="Enter your password"
-    required
-    
+    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
     title="Password must be at least 12 characters long, include a capital letter, a number, and a special character">
 </div>
 

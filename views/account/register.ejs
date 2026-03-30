@@ -1,0 +1,51 @@
+<h1><%- title %></h1>
+
+<form class="registerForm" action="/account/register" method="POST">
+
+<div>
+    <label for="firstname">First Name</label><br>
+    <input 
+    type="text"
+    id="firstname"
+    name="account_firstname"
+    placeholder="Enter your first name" required>
+</div>
+
+<br>
+<div>
+    <label for="lastname">Last Name</label> <br>
+    <input 
+    type="text"
+    id="lastname"
+    name="account_lastname"
+    placeholder="Enter your second Name" required>
+</div>
+
+<br>
+<div>
+    <label for="email">Email Address</label><br>
+    <input 
+    type="email"
+    id="email"
+    name="account_email"
+    placeholder="Enter your email" required>
+</div>
+
+<br>
+
+<div>
+  <label for="password">Password</label><br>
+  <input 
+    type="password"
+    id="password"
+    name="account_password"
+    placeholder="Enter your password"
+    required
+    
+    title="Password must be at least 12 characters long, include a capital letter, a number, and a special character">
+</div>
+
+
+<button type="submit">Register</button>
+</form>  
+

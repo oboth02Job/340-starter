@@ -1,0 +1,23 @@
+<h1><%- title %></h1>
+
+<p class="notice"><%- message %></p>
+
+<form method="POST" action="/inv/add-inventory">
+
+  <label>Classification</label>
+  <%- classificationList %>
+
+  <label>Make</label>
+  <input type="text" name="inv_make" required>
+
+  <label>Model</label>
+  <input type="text" name="inv_model" required>
+
+  <label>Year</label>
+  <input type="number" name="inv_year" required>
+
+  <label>Price</label>
+  <input type="number" name="inv_price" required>
+
+  <button type="submit">Add Vehicle</button>
+</form>

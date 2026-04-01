@@ -108,56 +108,71 @@ invCont.buildAddInventory = async function (req, res, next) {
     let nav = await utilities.getNav()
     let classificationList = await utilities.buildClassificationList();
     res.render("inventory/add-inventory", {
-        title: "Add Inventory",
-        nav,
-        classificationList,
-        message: null
-    })
+      title: "Add Inventory",
+      nav,
+      classificationList,
+      message: null,
+
+      inv_make: "",
+      inv_model: "",
+      inv_year: "",
+      inv_price: "",
+      classification_id: "",
+    });
 }
 
 invCont.addInventory = async function (req, res) {
+ 
+  const { inv_make, inv_model, inv_year, inv_price, classification_id } =
+    req.body;
+
     let nav = await utilities.getNav()
-    let classificationList = await utilities.buildClassificationList()
     
-    const {
-        inv_make,
-        inv_model,
-        inv_year,
-        inv_price,
-        classification_id,
-    } = req.body;
+    let classificationList =
+      await utilities.buildClassificationList(classification_id);
 
-    if (!inv_make || !inv_model || !inv_year || !inv_price || !classification_id) {
-        return res.render("inventory/add-inventory", {
-            title: "Add Inventory",
-            nav,
-            classificationList,
-            message: "Error: All fields are required"
-        })
-    }
+  if (
+    !inv_make ||
+    !inv_model ||
+    !inv_year ||
+    !inv_price ||
+    !classification_id
+  ) {
+    return res.render("inventory/add-inventory", {
+      title: "Add Inventory",
+      nav,
+      classificationList,
+      message: "Error: All fields are required",
 
-    const result = await invModel.addInventory(
-        inv_make,
-        inv_model,
-        inv_year,
-        inv_price,
-        classification_id,
-    );
-    if (result) {
-        return res.render("inventory/management", {
-            title: "Inventory Management",
-            nav,
-            message: "Success! Vehicle added"
-        })
-    } else {
-        return res.render("inventory/management", {
-            title: "Add Inventory",
-            nav,
-            classificationList,
-            message: "Error, could not add vehicle"
-        })
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_price,
+      classification_id,
+    });
+  }
 
-    }
+  const result = await invModel.addInventory(
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_price,
+    classification_id,
+  );
+  if (result) {
+    return res.render("inventory/management", {
+      title: "Inventory Management",
+      nav,
+      message: "Success! Vehicle added",
+    });
+  } else {
+    return res.render("inventory/management", {
+      title: "Add Inventory",
+      nav,
+      classificationList,
+      message: "Error, could not add vehicle",
+    });
+  }
 }
 
 

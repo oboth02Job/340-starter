@@ -2,22 +2,23 @@
 
 <p class="notice"><%- message %></p>
 
+
 <form method="POST" action="/inv/add-inventory">
 
-  <label>Classification</label>
-  <%- classificationList %>
+  <label>Classification</label> 
+  <%- classificationList %> <br>
 
-  <label>Make</label>
-  <input type="text" name="inv_make" required>
+  <label>Make</label> 
+  <input type="text" name="inv_make" value="<%= inv_make || '' %>"> <br>
 
   <label>Model</label>
-  <input type="text" name="inv_model" required>
+  <input type="text" name="inv_model" value="<%= inv_model || '' %>"> <br>
 
   <label>Year</label>
-  <input type="number" name="inv_year" required>
-
+  <input type="number" name="inv_year" value="<%= inv_year || '' %>">
+<br>
   <label>Price</label>
-  <input type="number" name="inv_price" required>
+  <input type="number" name="inv_price" value="<%= inv_price || '' %>"> <br>
 
   <button type="submit">Add Vehicle</button>
 </form>

@@ -23,4 +23,17 @@ router.post(
   utilities.handleErrors(invController.addInventory),
 );
 
+router.get(
+  "./getInventory/:classification_id",
+  utilities.handleErrors(invController.getInventoryJSON),
+);
+
+//route to update inventory
+router.get(
+  "/edit/:inventory_id",
+  utilities.handleErrors(invController.editInventory),
+);
+
+router.post("/update/", utilities.handleErrors(invController.updateInventory));
+
 module.exports = router;

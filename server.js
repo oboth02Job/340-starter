@@ -14,13 +14,20 @@ const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const utilities = require("./utilities/")
 const session = require("express-session")
+const flash = require("connect-flash")
 const pool = require("./database/")
 const accountRoute = require("./routes/accountRoute")
-// const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
 
 
-app.use(express.json())
+
+// app.use(express.json())
 app.use(express.urlencoded({ extended: true})) // for parsing application/x-www-form-urlencoded
+app.use(express.json());
+
+
+app.use(express.static("public"));
+
 
 /* ***********************
  * Middleware
@@ -38,8 +45,12 @@ app.use(
   }),
 );
 
+app.use(flash())
+
+app.use("/account", accountRoute);
+
 // Express Messages Middleware
-app.use(require("connect-flash")())
+// app.use(require("connect-flash")())
 app.use(function(req, res, next) {
   res.locals.messages = require("express-messages")(req, res)
   next()
@@ -47,6 +58,11 @@ app.use(function(req, res, next) {
 
 
 
+//Cookie Parser middleware
+app.use(cookieParser())
+
+//Cookie checkJWTToken middleware
+app.use(utilities.checkJWTToken);
 
 /* ***********************
  * View Engine and Templates
@@ -54,13 +70,6 @@ app.use(function(req, res, next) {
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
-
-/* ***********************
- * Routes
- *************************/
-app.use(express.static("public"))
-
-app.use("/account", accountRoute);
 
 //Index Route
 app.get("/", utilities.handleErrors(baseController.buildHome));

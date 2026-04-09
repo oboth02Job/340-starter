@@ -141,10 +141,12 @@ async function accountLogin(req, res) {
 
 async function buildAccount(req, res, next) {
   let nav = await utilities.getNav()
+  const accountData = res.locals.accountData
+  const welcomeMessage = accountData ? `Welcome, ${accountData.account_firstname}!` : "Welcome!"
   res.render("account/account", {
     title: "My account",
     nav,
-    message:"",
+    message: welcomeMessage,
     errors: null
   })
 }
@@ -199,4 +201,5 @@ module.exports = {
   buildAccount,
   checkLogin,
   login,
+  accountLogout,
 };

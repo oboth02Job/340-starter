@@ -51,10 +51,12 @@ invCont.triggerError = async function (req, res, next) {
 invCont.buildManagement = async function (req, res, next) {
     let nav = await utilities.getNav()
     let classificationList = await utilities.buildClassificationList();
+    const accountData = res.locals.accountData
+    const welcomeMessage = accountData ? `Welcome, ${accountData.account_firstname}!` : null
     res.render("inventory/management", {
         title: "Inventory Management",
         nav,
-        message: null,
+        message: welcomeMessage,
         classificationList,
     } )
 }

@@ -1,6 +1,6 @@
 const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
-const bcryptjs = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
@@ -120,10 +120,10 @@ async function accountLogin(req, res) {
           maxAge: 3600 * 1000,
         });
       }
-      return res.redirect("/account/");
+      return res.redirect("/inv");
     } else {
       req.flash(
-        "message notice",
+        "notice",
         "Please check your credentials and try again.",
       );
       res.status(400).render("account/login", {
@@ -141,12 +141,62 @@ async function accountLogin(req, res) {
 
 async function buildAccount(req, res, next) {
   let nav = await utilities.getNav()
-  res.render("account/default", {
+  res.render("account/account", {
     title: "My account",
     nav,
-    message: "Happy to see you!"
+    message:"",
+    errors: null
   })
 }
 
+async function accountLogout(req, res, next) {
+  res.clearCookie("jwt")
+  req.flash("notice", "You have been logged out.")
+  return res.redirect("/")
+}
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccount };
+function login(req, res) {
+  const payload = {
+    account_id: user.account_id,
+    firstName: user.firstName,
+    account_type: user.account_type,
+  };
+
+  const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "2h",
+  }); //here
+
+  //Set cookie
+  res.cookie('jwt', token, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000 })
+  res.redirect("/")
+}
+
+function checkLogin(req, res, next) {
+  const token = req.cookies.jwt
+  console.log("Token:", token)
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      console.log("Decoded:", decoded);
+      res.locals.accountData = decoded;
+    } catch (err) {
+      console.log("Invalid token");
+      res.locals.accountData = null;
+    }
+  } else {
+    console.log("No token found");
+    res.locals.accountData = null;
+  }
+  next()
+}
+
+
+module.exports = {
+  buildLogin,
+  buildRegister,
+  registerAccount,
+  accountLogin,
+  buildAccount,
+  checkLogin,
+  login,
+};

@@ -54,7 +54,8 @@ invCont.buildManagement = async function (req, res, next) {
     res.render("inventory/management", {
         title: "Inventory Management",
         nav,
-        message: null
+        message: null,
+        classificationList,
     } )
 }
 

@@ -22,21 +22,24 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 
-//Route do the accounts default
-router.get("/", utilities.handleErrors(accountController.buildAccount));
-
 // Route for when "my account" is clicked
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
-
-router.get("/accounts/accountRoute");
 
 // Route for when "register" is clicked
 router.get("/register", utilities.handleErrors(accountController.buildRegister));
 
+// Route for account dashboard
 router.get(
   "/",
   utilities.checkLogin,
-  utilities.handleErrors(accountController.buildAccount),
+  utilities.handleErrors(accountController.buildAccount)
+);
+
+
+// Route for logging out
+router.get(
+  "/logout",
+  utilities.handleErrors(accountController.accountLogout)
 );
 
 module.exports = router

@@ -1,0 +1,15 @@
+<h1><%= title %></h1>
+
+<% if (message) { %>
+  <p class="notice"><%= message %></p>
+<% } %>
+
+<% if (errors) { %>
+  <ul>
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<p>You're logged in</p>

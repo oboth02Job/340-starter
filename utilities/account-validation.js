@@ -3,71 +3,117 @@ const { body, validationResult } = require("express-validator");
 const validate = {};
 const accountModel = require("../models/account-model");
 
-
-
 /*  **********************************
-  *  Registration Data Validation Rules
-  * ********************************* */
-  validate.registrationRules = () => {
-    return [
-      // firstname is required and must be string
-      body("account_firstname")
-        .trim()
-        .escape()
-        .notEmpty()
-        .isLength({ min: 1 })
-        .withMessage("Please provide a first name."), // on error this message is sent.
+ *  Registration Data Validation Rules
+ * ********************************* */
+validate.registrationRules = () => {
+  return [
+    // firstname is required and must be string
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 1 })
+      .withMessage("Please provide a first name."), // on error this message is sent.
 
-      // lastname is required and must be string
-      body("account_lastname")
-        .trim()
-        .escape()
-        .notEmpty()
-        .isLength({ min: 2 })
-        .withMessage("Please provide a last name."), // on error this message is sent.
+    // lastname is required and must be string
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isLength({ min: 2 })
+      .withMessage("Please provide a last name."), // on error this message is sent.
 
-      // valid email is required and cannot already exist in the DB
-      body("account_email")
-        .trim()
-        .isEmail()
-        .normalizeEmail() // refer to validator.js docs
-        .withMessage("A valid email is required.")
-        .custom(async (account_email) => {
-          const emailExists =
-            await accountModel.checkExistingEmail(account_email);
-          if (emailExists) {
-            throw new Error(
-              "Email exists. Please log in or use different email",
-            );
-          }
-        }),
+    // valid email is required and cannot already exist in the DB
+    body("account_email")
+      .trim()
+      .isEmail()
+      .normalizeEmail() // refer to validator.js docs
+      .withMessage("A valid email is required.")
+      .custom(async (account_email) => {
+        const emailExists =
+          await accountModel.checkExistingEmail(account_email);
+        if (emailExists) {
+          throw new Error("Email exists. Please log in or use different email");
+        }
+      }),
 
-      // password is required and must be strong password
-      body("account_password")
-        .trim()
-        .notEmpty()
-        .isStrongPassword({
-          minLength: 12,
-          minLowercase: 1,
-          minUppercase: 1,
-          minNumbers: 1,
-          minSymbols: 1,
-        })
-        .withMessage("Password does not meet requirements."),
-    ];
+    // password is required and must be strong password
+    body("account_password")
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements."),
+  ];
+};
+
+
+/* **************
+ *  Inventory Data Validation Rules
+ * ************* */
+function inventoryRules() {
+  return [
+    // Item name is required
+    body("item_name").trim().notEmpty().withMessage("Item name is required"),
+
+    // Quantity is required and must be a number greater than 0
+    body("item_quantity")
+      .trim()
+      .notEmpty()
+      .withMessage("Quantity is required")
+      .isInt({ min: 1 })
+      .withMessage("Quantity must be a number greater than 0"),
+
+    // Price is required and must be a valid float
+    body("item_price")
+      .trim()
+      .notEmpty()
+      .withMessage("Price is required")
+      .isFloat({ min: 0.01 })
+      .withMessage("Price must be a number greater than 0"),
+  ];
+}
+
+/* **************
+ *  Check Inventory Data & Return Errors or Continue
+ * ************* */
+async function checkInventoryData(req, res, next) {
+  const errors = validationResult(req);
+  const { item_name, item_quantity, item_price } = req.body;
+
+  if (!errors.isEmpty()) {
+    // Get navigation (optional, depends on your templates)
+    let nav = await utilities.getNav();
+
+    return res.render("inventory/add", {
+      title: "Add Inventory Item",
+      nav,
+      errors: errors.array(),
+      item_name,
+      item_quantity,
+      item_price,
+    });
   }
 
+  // If everything is good, continue to next middleware/controller
+  next();
+}
 
-  /* ******************************
+/* ******************************
  * Check data and return errors or continue to registration
  * ***************************** */
 validate.checkRegData = async (req, res, next) => {
-  
-  const { account_firstname, account_lastname, account_email } = req.body
-   let errors = []
-  errors = validationResult(req)
+  const { account_firstname, account_lastname, account_email } = req.body;
+  let errors = [];
+  errors = validationResult(req);
   if (!errors.isEmpty()) {
-    let nav = await utilities.getNav()
+    let nav = await utilities.getNav();
     res.render("account/register", {
       errors,
       title: "Registration",
@@ -75,16 +121,15 @@ validate.checkRegData = async (req, res, next) => {
       account_firstname,
       account_lastname,
       account_email,
-    })
-    return
+    });
+    return;
   }
-  next()
-}
-
+  next();
+};
 
 /*  **********************************
-  *  Login data validation rules
-  * ********************************* */
+ *  Login data validation rules
+ * ********************************* */
 validate.loginRules = () => {
   return [
     //Valid email required
@@ -100,26 +145,26 @@ validate.loginRules = () => {
       .notEmpty()
       .withMessage("Please provide a password."),
   ];
-}
- 
+};
+
 /*  **********************************
-  *  Check login errors and return error or continue
-  * ********************************* */
+ *  Check login errors and return error or continue
+ * ********************************* */
 validate.checkLoginData = async function (req, res, next) {
   console.log("checkLoginData hit", req.body);
-  const { account_email } = req.body
-  let errors = validationResult(req)
+  const { account_email } = req.body;
+  let errors = validationResult(req);
   if (!errors.isEmpty()) {
-    let nav = await utilities.getNav()
+    let nav = await utilities.getNav();
     return res.render("account/login", {
       title: "Login",
       nav,
       errors,
       account_email,
-    })
+    });
   }
-    next()
- }
+  next();
+};
 
-module.exports = validate
 
+module.exports = validate;

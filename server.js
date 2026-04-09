@@ -20,7 +20,6 @@ const accountRoute = require("./routes/accountRoute")
 const cookieParser = require("cookie-parser")
 
 
-
 // app.use(express.json())
 app.use(express.urlencoded({ extended: true})) // for parsing application/x-www-form-urlencoded
 app.use(express.json());
@@ -47,6 +46,12 @@ app.use(
 
 app.use(flash())
 
+//Cookie Parser middleware
+app.use(cookieParser())
+
+//Cookie checkJWTToken middleware
+app.use(utilities.checkJWTToken);
+
 app.use("/account", accountRoute);
 
 // Express Messages Middleware
@@ -55,14 +60,6 @@ app.use(function(req, res, next) {
   res.locals.messages = require("express-messages")(req, res)
   next()
 })
-
-
-
-//Cookie Parser middleware
-app.use(cookieParser())
-
-//Cookie checkJWTToken middleware
-app.use(utilities.checkJWTToken);
 
 /* ***********************
  * View Engine and Templates

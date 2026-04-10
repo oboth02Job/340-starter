@@ -55,9 +55,10 @@ invCont.buildManagement = async function (req, res, next) {
     const welcomeMessage = accountData ? `Welcome, ${accountData.account_firstname}!` : null
     res.render("inventory/management", {
         title: "Inventory Management",
-        nav,
+      nav,
         message: welcomeMessage,
-        classificationList,
+      classificationList,
+        accountData: res.locals.accountData
     } )
 }
 

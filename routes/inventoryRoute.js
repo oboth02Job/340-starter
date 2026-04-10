@@ -12,30 +12,33 @@ router.get("/detail/:invId", utilities.handleErrors(invController.buildByInvento
 router.get("/error", utilities.handleErrors(invController.triggerError))
 router.get(
   "/",
-  utilities.handleErrors(checkEmployeeOrAdmin, invController.buildManagement),
+  checkEmployeeOrAdmin,
+  utilities.handleErrors(invController.buildManagement),
 );
 router.get(
   "/add-classification",
-  utilities.handleErrors(
-    checkEmployeeOrAdmin, invController.buildAddClassification,
-  ),
+  checkEmployeeOrAdmin,
+  utilities.handleErrors(invController.buildAddClassification),
 );
 router.post(
   "/add-classification",
-  utilities.handleErrors(checkEmployeeOrAdmin, invController.addClassification),
+  checkEmployeeOrAdmin,
+  utilities.handleErrors(invController.addClassification),
 );
 
 router.get(
   "/add-inventory",
-  utilities.handleErrors(checkEmployeeOrAdmin, invController.buildAddInventory),
+  checkEmployeeOrAdmin,
+  utilities.handleErrors(invController.buildAddInventory),
 );
 router.post(
   "/add-inventory",
-  utilities.handleErrors(checkEmployeeOrAdmin, invController.addInventory),
+  checkEmployeeOrAdmin,
+  utilities.handleErrors(invController.addInventory),
 );
 
 router.get(
-  "./getInventory/:classification_id",
+  "/getInventory/:classification_id",
   utilities.handleErrors(invController.getInventoryJSON),
 );
 

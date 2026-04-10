@@ -57,7 +57,7 @@ validate.registrationRules = () => {
 /* **************
  *  Inventory Data Validation Rules
  * ************* */
-function inventoryRules() {
+validate.inventoryRules = () => {
   return [
     // Item name is required
     body("item_name").trim().notEmpty().withMessage("Item name is required"),
@@ -83,7 +83,7 @@ function inventoryRules() {
 /* **************
  *  Check Inventory Data & Return Errors or Continue
  * ************* */
-async function checkInventoryData(req, res, next) {
+validate.checkInventoryData = async (req, res, next) => {
   const errors = validationResult(req);
   const { item_name, item_quantity, item_price } = req.body;
 
@@ -151,7 +151,6 @@ validate.loginRules = () => {
  *  Check login errors and return error or continue
  * ********************************* */
 validate.checkLoginData = async function (req, res, next) {
-  console.log("checkLoginData hit", req.body);
   const { account_email } = req.body;
   let errors = validationResult(req);
   if (!errors.isEmpty()) {

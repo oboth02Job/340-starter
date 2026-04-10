@@ -3,24 +3,35 @@ const express = require("express")
 const router = new express.Router()
 const invController = require("../controllers/invController")
 const utilities = require("../utilities")
+const { checkEmployeeOrAdmin } = require("../controllers/accountController");
+
+
 // Route to build inventory by classification
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId,));
 router.get("/detail/:invId", utilities.handleErrors(invController.buildByInventoryId));
 router.get("/error", utilities.handleErrors(invController.triggerError))
-router.get("/", utilities.handleErrors(invController.buildManagement));
+router.get(
+  "/",
+  utilities.handleErrors(checkEmployeeOrAdmin, invController.buildManagement),
+);
 router.get(
   "/add-classification",
-  utilities.handleErrors(invController.buildAddClassification),
+  utilities.handleErrors(
+    checkEmployeeOrAdmin, invController.buildAddClassification,
+  ),
 );
-router.post("/add-classification", utilities.handleErrors(invController.addClassification));
+router.post(
+  "/add-classification",
+  utilities.handleErrors(checkEmployeeOrAdmin, invController.addClassification),
+);
 
 router.get(
   "/add-inventory",
-  utilities.handleErrors(invController.buildAddInventory),
+  utilities.handleErrors(checkEmployeeOrAdmin, invController.buildAddInventory),
 );
 router.post(
   "/add-inventory",
-  utilities.handleErrors(invController.addInventory),
+  utilities.handleErrors(checkEmployeeOrAdmin, invController.addInventory),
 );
 
 router.get(

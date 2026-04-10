@@ -4,6 +4,7 @@ const router = new express.Router()
 const utilities = require("../utilities")
 const accountController = require("../controllers/accountController");
 const regValidate = require("../utilities/account-validation");
+const { checkEmployeeOrAdmin } = require("../controllers/accountController");
 
 
 // Process the registration data
@@ -41,5 +42,6 @@ router.get(
   "/logout",
   utilities.handleErrors(accountController.accountLogout)
 );
+
 
 module.exports = router

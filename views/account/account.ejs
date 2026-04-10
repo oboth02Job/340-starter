@@ -1,15 +1,22 @@
+
 <h1><%= title %></h1>
 
-<% if (message) { %>
-  <p class="notice"><%= message %></p>
-<% } %>
+<p><%= message %></p>
 
-<% if (errors) { %>
-  <ul>
-    <% errors.forEach(error => { %>
-      <li><%= error.msg %></li>
-    <% }) %>
-  </ul>
-<% } %>
+<p>You are logged in.</p>
 
-<p>You're logged in</p>
+<hr>
+
+<h2>Account Management</h2>
+
+<ul>
+  <li>
+    <a href="/account/update">Edit Account Information</a>
+  </li>
+
+  <% if (accountData && (accountData.account_type === "Employee" || accountData.account_type === "Admin")) { %>
+    <li>
+      <a href="/inv/">Inventory Management</a>
+    </li>
+  <% } %>
+</ul>

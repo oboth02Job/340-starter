@@ -52,8 +52,6 @@ app.use(cookieParser())
 //Cookie checkJWTToken middleware
 app.use(utilities.checkJWTToken);
 
-app.use("/account", accountRoute);
-
 // Express Messages Middleware
 // app.use(require("connect-flash")())
 app.use(function(req, res, next) {
@@ -70,6 +68,9 @@ app.set("layout", "./layouts/layout") // not at views root
 
 //Index Route
 app.get("/", utilities.handleErrors(baseController.buildHome));
+
+// Account Routes
+app.use("/account", accountRoute);
 
 // Inventory Routes
 app.use("/inv", inventoryRoute)

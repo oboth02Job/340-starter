@@ -120,7 +120,12 @@ async function accountLogin(req, res) {
           maxAge: 3600 * 1000,
         });
       }
-      return res.redirect("/inv");
+      // Redirect based on account type
+      if (accountData.account_type === "Employee" || accountData.account_type === "Admin") {
+        return res.redirect("/inv");
+      } else {
+        return res.redirect("/account/");
+      }
     } else {
       req.flash(
         "notice",
@@ -147,6 +152,7 @@ async function buildAccount(req, res, next) {
     title: "My account",
     nav,
     message: welcomeMessage,
+    accountData,
     errors: null
   })
 }
@@ -193,6 +199,32 @@ function checkLogin(req, res, next) {
 }
 
 
+async function checkEmployeeOrAdmin(req, res, next) {
+  
+  try {
+    if (res.locals.accountData) {
+      const accountType = res.locals.accountData.account_type;
+
+      if (accountType === "Employee" || accountType === "Admin") {
+        return next(); // allow access
+      }
+    }
+
+    // Not authorized
+    const nav = await utilities.getNav();
+    return res.status(403).render("account/login", {
+      title: "Login",
+      nav,
+      message: "Access denied. Please log in with an Employee or Admin account."
+    });
+
+  } catch (error) {
+    console.error("Middleware error:", error);
+    return res.redirect("/account/login");
+  }
+}
+
+
 module.exports = {
   buildLogin,
   buildRegister,
@@ -202,4 +234,5 @@ module.exports = {
   checkLogin,
   login,
   accountLogout,
+  checkEmployeeOrAdmin,
 };

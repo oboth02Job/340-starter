@@ -16,19 +16,20 @@
 <h2>Account Update</h2>
 
 <form id="loginForm" action="/account/update" method="post">
+    <input type="hidden" name="account_id" value="<%= accountData ? accountData.account_id : '' %>">
 
     <div>
     <label for="account_firstname">First Name</label><br>
     <input type="text" name="account_firstname"
      id="accountFirstname" 
-     required value="<%= locals.account_firstname %>">
+     required value="<%= accountData ? accountData.account_firstname : '' %>">
 </div>
 
 <br>
 <div>
     <label for="account_lastname">Last Name</label> <br>
     <input type="text" name="account_lastname" id="accountLastname" 
-    required value="<%= locals.account_lastname %>">
+    required value="<%= accountData ? accountData.account_lastname : '' %>">
 
 </div>
 
@@ -38,7 +39,8 @@
     type="email"
     id="email"
     name="account_email"
-    required placeholder="Enter a valid email address">
+    required placeholder="Enter a valid email address"
+    value="<%= accountData ? accountData.account_email : '' %>">
 </div>
 
 
@@ -52,7 +54,7 @@
 
 <h2>Change Password</h2>
 
-<form action="/account/change-password" method="post">
+<form action="/account/update-password" method="post">
 
   <label for="account_password">New Password</label>
   <input type="password" name="account_password" id="account_password" required

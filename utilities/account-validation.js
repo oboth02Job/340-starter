@@ -165,5 +165,56 @@ validate.checkLoginData = async function (req, res, next) {
   next();
 };
 
+validate.updateAccountRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .notEmpty()
+      .withMessage("First name is required."),
+
+    body("account_lastname")
+      .trim()
+      .notEmpty()
+      .withMessage("Last name is required."),
+
+    body("account_email")
+      .trim()
+      .isEmail()
+      .withMessage("Valid email required.")
+      .custom(async (email, { req }) => {
+        const account = await accountModel.getAccountByEmail(email);
+
+        if (account && account.account_id != req.body.account_id) {
+          throw new Error("Email already exists.");
+        }
+      }),
+  ];
+}
+
+validate.passwordRules = () => {
+  return [
+    body("account_password")
+      .trim()
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 characters."),
+  ];
+}
+
+validate.checkUpdateData = async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const nav = await utilities.getNav();
+
+    return res.render("account/update", {
+      title: "Update Account",
+      nav,
+      accountData: req.body,
+      errors: errors.array(),
+    });
+  }
+
+  next();
+}
 
 module.exports = validate;

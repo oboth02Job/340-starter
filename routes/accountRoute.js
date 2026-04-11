@@ -23,6 +23,20 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 
+router.post(
+  "/update",
+  regValidate.updateAccountRules(),
+  regValidate.checkUpdateData,
+  utilities.handleErrors(accountController.updateAccount),
+);
+
+router.post(
+  "/update-password",
+  regValidate.passwordRules(),
+  regValidate.checkUpdateData,
+  utilities.handleErrors(accountController.updatePassword),
+);
+
 // Route for when "my account" is clicked
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
@@ -44,18 +58,15 @@ router.get(
 );
 
 router.get(
-  "/update/:account_id", 
+  "/update", 
+  utilities.checkLogin,
   utilities.handleErrors(accountController.buildUpdateView),
 );
 
 router.get(
-  "/update",
-  utilities.handleErrors(accountController.updateAccount),
-);
-
-router.get(
-  "/change-password",
-  utilities.handleErrors(accountController.changePassword),
+  "/update-password", 
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildUpdatePasswordView),
 );
 
 module.exports = router

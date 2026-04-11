@@ -244,6 +244,26 @@ async function buildUpdateView(req, res, next) {
   }
 }
 
+async function buildUpdatePasswordView(req, res, next) {
+  try {
+    const nav = await utilities.getNav()
+    return res.render("account/update-password", {
+      title: "Update Password",
+      nav,
+      accountData: res.locals.accountData,
+      message: null,
+      errors: null
+    })
+  } catch (error) {
+    console.log("Update password view error:", error)
+    return res.status(500).render("errors/error", {
+      title: "Server error",
+      message: "Unable to load password update page",
+      nav: await utilities.getNav()
+    })
+  }
+}
+
 async function updateAccount(req, res) {
   const nav = await utilities.getNav()
   const { account_id, account_firstname, account_lastname, account_email } = req.body;
@@ -266,6 +286,34 @@ async function updateAccount(req, res) {
   }
 }
 
+async function updatePassword(req, res) {
+  const nav = await utilities.getNav();
+  const { account_id, account_password } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(account_password, 10);
+
+    const updateResult = await accountModel.updatePassword(
+      account_id,
+      hashedPassword,
+    );
+
+    if (updateResult) {
+      req.flash("notice", "Password updated successfully.");
+      return res.redirect("/account/");
+    } else {
+      throw new Error("Password update failed");
+    }
+  } catch (error) {
+    return res.status(500).render("account/update", {
+      title: "Update Account",
+      nav,
+      accountData: res.locals.accountData,
+      errors: null,
+    });
+  }
+}
+
 module.exports = {
   buildLogin,
   buildRegister,
@@ -277,4 +325,7 @@ module.exports = {
   accountLogout,
   checkEmployeeOrAdmin,
   buildUpdateView,
+  buildUpdatePasswordView,
+  updateAccount,
+  updatePassword,
 };

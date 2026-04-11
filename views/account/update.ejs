@@ -1,0 +1,67 @@
+<h1><%= title %></h1>
+
+<% if (message) { %>
+    <p><%= message %></p>
+    <% } %>
+     
+
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<h2>Account Update</h2>
+
+<form id="loginForm" action="/account/update" method="post">
+
+    <div>
+    <label for="account_firstname">First Name</label><br>
+    <input type="text" name="account_firstname"
+     id="accountFirstname" 
+     required value="<%= locals.account_firstname %>">
+</div>
+
+<br>
+<div>
+    <label for="account_lastname">Last Name</label> <br>
+    <input type="text" name="account_lastname" id="accountLastname" 
+    required value="<%= locals.account_lastname %>">
+
+</div>
+
+<div>
+    <label for="account_email">Email Address</label><br>
+    <input 
+    type="email"
+    id="email"
+    name="account_email"
+    required placeholder="Enter a valid email address">
+</div>
+
+
+<button type="submit">Update Account</button>
+</form>
+
+
+<!---------------------------->
+<!---Password change Form-->
+<!---------------------------->
+
+<h2>Change Password</h2>
+
+<form action="/account/change-password" method="post">
+
+  <label for="account_password">New Password</label>
+  <input type="password" name="account_password" id="account_password" required
+  placeholder="Enter your password"
+    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+    title="Password must be at least 12 characters long, include a capital letter, a number, and a special character">
+
+  <input type="hidden" name="account_id"
+    value="<%= accountData.account_id %>">
+
+  <button type="submit">Change Password</button>
+</form>

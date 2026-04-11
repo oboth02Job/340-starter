@@ -43,5 +43,19 @@ router.get(
   utilities.handleErrors(accountController.accountLogout)
 );
 
+router.get(
+  "/update/:account_id", 
+  utilities.handleErrors(accountController.buildUpdateView),
+);
+
+router.get(
+  "/update",
+  utilities.handleErrors(accountController.updateAccount),
+);
+
+router.get(
+  "/change-password",
+  utilities.handleErrors(accountController.changePassword),
+);
 
 module.exports = router

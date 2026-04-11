@@ -122,7 +122,7 @@ async function accountLogin(req, res) {
       }
       // Redirect based on account type
       if (accountData.account_type === "Employee" || accountData.account_type === "Admin") {
-        return res.redirect("/inv");
+        return res.redirect("/account");
       } else {
         return res.redirect("/account/");
       }
@@ -224,6 +224,47 @@ async function checkEmployeeOrAdmin(req, res, next) {
   }
 }
 
+async function buildUpdateView(req, res, next) {
+  try {
+    const nav = await utilities.getNav()
+    return res.render("account/update", {
+      title: "Update Account",
+      nav,
+      accountData: res.locals.accountData,
+      message: null,
+      errors: null
+    })
+  } catch (error) {
+    console.log("Update view error:", error)
+    return res.status(500).render("errors/error", {
+      title: "Server error",
+      message: "Unable to load update page",
+      nav: await utilities.getNav()
+    })
+  }
+}
+
+async function updateAccount(req, res) {
+  const nav = await utilities.getNav()
+  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+
+  const updateResult = await accountModel.updateAccount(
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+  ); if (updateResult) {
+    req.flash("notice", "Account updated successfully")
+    return res.redirect("/account/")
+  } else {
+    return res.status(500).render("account update", {
+      title: "Account Update",
+      nav,
+      accountData: req.body,
+      errors: null
+    })
+  }
+}
 
 module.exports = {
   buildLogin,
@@ -235,4 +276,5 @@ module.exports = {
   login,
   accountLogout,
   checkEmployeeOrAdmin,
+  buildUpdateView,
 };

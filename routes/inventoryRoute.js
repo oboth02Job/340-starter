@@ -50,4 +50,5 @@ router.get(
 
 router.post("/update/", utilities.handleErrors(invController.updateInventory));
 
+
 module.exports = router;

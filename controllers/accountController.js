@@ -266,23 +266,34 @@ async function buildUpdatePasswordView(req, res, next) {
 
 async function updateAccount(req, res) {
   const nav = await utilities.getNav()
-  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+  const {
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email,
+    account_phone,
+    account_bio,
+    account_image } = req.body;
 
   const updateResult = await accountModel.updateAccount(
     account_id,
     account_firstname,
     account_lastname,
     account_email,
-  ); if (updateResult) {
-    req.flash("notice", "Account updated successfully")
-    return res.redirect("/account/")
+    account_phone,
+    account_bio,
+    account_image,
+  ); if (updateResult && updateResult.rowCount > 0) {
+    req.flash("notice", "Account updated successfully");
+    return res.redirect("/account/");
   } else {
-    return res.status(500).render("account update", {
+    return res.status(500).render("account/update", {
       title: "Account Update",
       nav,
       accountData: req.body,
-      errors: null
-    })
+      errors: null,
+      message: null,
+    });
   }
 }
 
@@ -310,6 +321,7 @@ async function updatePassword(req, res) {
       nav,
       accountData: res.locals.accountData,
       errors: null,
+      message: "Password update failed"
     });
   }
 }

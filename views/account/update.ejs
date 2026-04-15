@@ -5,12 +5,12 @@
     <% } %>
      
 
-<% if (errors) { %>
+<% if (errors && errors.length) { %>
   <ul class="notice">
- <% errors.array().forEach(error => { %>
-   <li><%= error.msg %></li>
-<%  }) %>
- </ul>
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
 <% } %>
 
 <h2>Account Update</h2>
@@ -43,6 +43,30 @@
     value="<%= accountData ? accountData.account_email : '' %>">
 </div>
 
+<div>
+    <label for="accountPhone">Phone</label><br>
+    <input type="tel" name="account_phone"
+    placeholder="+256-750-9879"
+     id="accountPhone" 
+     value="<%= accountData ? accountData.account_phone : '' %>">
+</div>
+
+<div>
+    <label for="accountBio">Bio</label><br>
+
+<textarea 
+  name="account_bio"
+  id="accountBio" 
+  rows="5" 
+  cols="60"><%= accountData ? accountData.account_bio : '' %></textarea>
+</div>
+
+<div>
+    <label for="account_image">Image</label><br>
+    <input type="text" name="account_image"
+     id="accountImage" 
+     value="<%= accountData ? accountData.account_image : '' %>">
+</div>
 
 <button type="submit">Update Account</button>
 </form>

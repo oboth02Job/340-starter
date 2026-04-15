@@ -188,6 +188,32 @@ validate.updateAccountRules = () => {
           throw new Error("Email already exists.");
         }
       }),
+
+    body("account_phone")
+      .optional({ checkFalsy: true })
+      .trim()
+      .custom((phone) => {
+        const cleaned = phone.replace(/[^0-9]/g, "");
+        if (!/^[0-9()+\-\s]*$/.test(phone)) {
+          throw new Error("Phone number may only contain digits, spaces, +, -, and parentheses.");
+        }
+        if (cleaned.length < 10 || cleaned.length > 15) {
+          throw new Error("Phone number must contain between 10 and 15 digits.");
+        }
+        return true;
+      }),
+
+    body("account_bio")
+      .optional({ checkFalsy: true })
+      .trim()
+      .isLength({ max: 500 })
+      .withMessage("Bio must be less than 500 characters."),
+
+    body("account_image")
+      .optional({ checkFalsy: true })
+      .trim()
+      .isURL()
+      .withMessage("Image must be a valid URL."),
   ];
 }
 
@@ -211,6 +237,7 @@ validate.checkUpdateData = async (req, res, next) => {
       nav,
       accountData: req.body,
       errors: errors.array(),
+      message: null,
     });
   }
 
